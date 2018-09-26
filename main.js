@@ -1,3 +1,5 @@
+// Plip.wav orig. 'Flipping Through Book.wav' by spookymodem.
+// See https://opengameart.org/content/book-pages
 
 // Array of atoms.
 let higgs = [];
@@ -7,6 +9,13 @@ let lS = 0.1;
 
 // Is the laser on?
 let zapON = false;
+
+// Sound effect.
+let plip;
+
+function preload(){
+  plip = loadSound('plip.wav');
+}
 
 function setup(){
   createCanvas(windowWidth,
@@ -19,12 +28,16 @@ function setup(){
     new Atom(width/2,
             height/2));
   
+  plip.setVolume(0.2);
+  
 }
 
 function mousePressed(){
   higgs.push(
     new Atom(mouseX,
              mouseY));
+  
+  plip.play();
 }
 
 
