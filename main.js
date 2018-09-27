@@ -30,14 +30,23 @@ function setup(){
   
   plip.setVolume(0.2);
   
+  rectMode(CENTER);
 }
 
-function mousePressed(){
+function makeAtom(){
   higgs.push(
     new Atom(mouseX,
              mouseY));
   
   plip.play();
+}
+
+function mousePressed(){
+  if (mouseX < width/10 &&
+     mouseY < width/10*0.618)
+    zapON = !zapON;
+  else
+  makeAtom();
 }
 
 
@@ -47,8 +56,9 @@ function draw(){
   // NB these lines not
   // in tut video!!!
   fill(255);
-  textSize(height/10);
-  text("Tap to add atoms", 12,24);
+  let tSize = height/10;
+  textSize(tSize);
+  text("National Poetry Day\n2018", tSize*1.7,tSize);
   
   // Iterate over all
   // atoms and do their
@@ -66,6 +76,14 @@ function draw(){
   higgs[i].update();
   higgs[i].render();
   }
+  
+  // Laser button.
+  fill(200,0,0,200);
+  rect(width/20,width/20*
+       0.618,
+      width/10,width/10*
+      0.618);
+  
 }
 
 function zap(a){
@@ -161,6 +179,8 @@ class Atom{
   
   update(){
     
+    this.bounds();
+    
     // Apply Euler
     // integration.
     this.vel.add(this.acc);
@@ -170,5 +190,31 @@ class Atom{
     
   }
   
+  bounds(){
+    
+    // Bounce strength.
+    let bS = 0.2;
+    
+    if (this.pos.y < 0 +
+       this.rad) 
+      this.acc.y+=bS;
+    
+    if (this.pos.y > height 
+        -
+       this.rad) 
+      this.acc.y-=bS;
+    
+    if (this.pos.x < 0 +
+       this.rad) 
+      this.acc.x+=bS;
+    
+    if (this.pos.x > width 
+        -
+       this.rad) 
+      this.acc.x-=bS;
+    
+  }
+  
   
 } // End of Atom object.
+
