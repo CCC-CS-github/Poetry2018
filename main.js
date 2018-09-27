@@ -47,6 +47,7 @@ function draw(){
   // NB these lines not
   // in tut video!!!
   fill(255);
+  textSize(height/10);
   text("Tap to add atoms", 12,24);
   
   // Iterate over all
