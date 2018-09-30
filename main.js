@@ -1,5 +1,13 @@
+
 // Plip.wav orig. 'Flipping Through Book.wav' by spookymodem.
 // See https://opengameart.org/content/book-pages
+
+// Sound effect.
+let plip;
+
+function preload(){
+  plip = loadSound('plip.wav');
+}
 
 // Array of atoms.
 let higgs = [];
@@ -10,12 +18,8 @@ let lS = 0.1;
 // Is the laser on?
 let zapON = false;
 
-// Sound effect.
-let plip;
-
-function preload(){
-  plip = loadSound('plip.wav');
-}
+// Button size.
+let buS;
 
 function setup(){
   createCanvas(windowWidth,
@@ -24,29 +28,37 @@ function setup(){
   background(12,255,72);
   
   
+  for (let i = 0;
+      i < 12;
+      i++){
   higgs.push(
     new Atom(width/2,
             height/2));
+  }
+  
+  buS = width/8;
   
   plip.setVolume(0.2);
   
-  rectMode(CENTER);
-}
-
-function makeAtom(){
-  higgs.push(
-    new Atom(mouseX,
-             mouseY));
-  
-  plip.play();
 }
 
 function mousePressed(){
-  if (mouseX < width/10 &&
-     mouseY < width/10*0.618)
+  
+  if (mouseX > 
+     width - buS &&
+     mouseY > 
+     height - buS * 0.618)
+  {
     zapON = !zapON;
-  else
-  makeAtom();
+  } else
+  createAtom();
+}
+
+function createAtom(){
+  higgs.push(
+    new Atom(mouseX,
+             mouseY));
+  plip.play();
 }
 
 
@@ -55,6 +67,13 @@ function draw(){
  
   // NB these lines not
   // in tut video!!!
+  stroke(0);
+  strokeWeight(3);
+  fill(255);
+  let tS = height/20;
+  textSize(tS);
+  text("Tap to add atoms", tS,tS*2);
+  // Poetry Day title.
   fill(255);
   let tSize = height/10;
   textSize(tSize);
@@ -77,13 +96,20 @@ function draw(){
   higgs[i].render();
   }
   
-  // Laser button.
-  fill(200,0,0,200);
-  rect(width/20,width/20*
-       0.618,
-      width/10,width/10*
-      0.618);
   
+  drawButton();
+  
+}
+
+function drawButton(){
+  
+  fill(222,0,0);
+  strokeWeight(2);
+  stroke(255);
+  
+  rect(width-buS, 
+       height-buS*0.618,
+      buS,buS*0.618);
 }
 
 function zap(a){
@@ -149,8 +175,56 @@ class Atom{
     // Radius of atom.
     this.rad = 42;
     
+    // Now, instantiate
+    // my electrons :)
+    this.elects = [];
+    
+    let nA = Math.floor(Math.random() *
+      7) + 1;
+    for (let i = 0;
+        i < nA;
+        i++){
+    this.elects.push(new 
+         Electron(0,
+                 0,
+                 i * 420));
+    }
+    
   } // End of constructor.
   
+  // When atom approaches
+  // boundaries of canvas,
+  // add a little force
+  // to push towards
+  // centre again.
+  bounds(){
+    
+    // Boundary force.
+    let bF = 0.05;
+    
+    if (this.pos.x < 
+       0 + this.rad){
+      this.acc.x +=
+        bF;
+    }
+    if (this.pos.x > 
+       width - this.rad){
+      this.acc.x -=
+        bF;
+    }
+    
+    if (this.pos.y < 
+       0 + this.rad){
+      this.acc.y +=
+        bF;
+    }
+    if (this.pos.y > 
+       height - this.rad){
+      this.acc.y -=
+        bF;
+    }
+    
+  }
   
   render(){
     stroke(0);
@@ -178,7 +252,9 @@ class Atom{
 
   
   update(){
-    
+    this.updateElectrons();
+    // Stop atoms
+    // wandering off.
     this.bounds();
     
     // Apply Euler
@@ -188,33 +264,53 @@ class Atom{
     
     this.acc.mult(0);   
     
+    
   }
   
-  bounds(){
-    
-    // Bounce strength.
-    let bS = 0.2;
-    
-    if (this.pos.y < 0 +
-       this.rad) 
-      this.acc.y+=bS;
-    
-    if (this.pos.y > height 
-        -
-       this.rad) 
-      this.acc.y-=bS;
-    
-    if (this.pos.x < 0 +
-       this.rad) 
-      this.acc.x+=bS;
-    
-    if (this.pos.x > width 
-        -
-       this.rad) 
-      this.acc.x-=bS;
-    
+  // Update positions of
+  // array of electrons.
+  updateElectrons(){
+    for (let i=0;
+         i<this.elects.length;
+         i++
+        ){
+      this.elects[i].theta+=PI;
+      this.elects[i].pos.x =
+        this.pos.x + 
+        this.rad * ((i+1)/4) * 
+        Math.cos(radians((i+1)/3.2*this.elects[i].theta));
+      this.elects[i].pos.y =
+        this.pos.y + 
+        this.rad * ((i+1)/4) * 
+        Math.sin(radians((i+1)/3*this.elects[i].theta));
+      
+      this.elects[i].render();
+      
+    }
   }
   
   
 } // End of Atom object.
 
+class Electron{
+  constructor(x,y,t){
+    this.pos = createVector(x,
+             y);
+    
+    // Orbital angle.
+    this.theta = t;
+    
+    this.rad = 8;
+  }
+  
+  render(){
+    stroke(0);
+    strokeWeight(2);
+    fill(0,0,222);
+    ellipse(this.pos.x,
+           this.pos.y,
+           this.rad, 
+            this.rad);
+  }
+  
+}
