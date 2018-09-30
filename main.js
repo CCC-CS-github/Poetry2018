@@ -67,12 +67,12 @@ function draw(){
  
   // NB these lines not
   // in tut video!!!
-  stroke(0);
+  stroke(255);
   strokeWeight(3);
-  fill(255);
+  fill(0);
   let tS = height/20;
   textSize(tS);
-  text("Tap to add atoms", tS,tS*2);
+  text("Tap to add atoms", tS,width-tS*2);
   // Poetry Day title.
   fill(255);
   let tSize = height/10;
