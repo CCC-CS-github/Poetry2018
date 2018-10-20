@@ -20,6 +20,11 @@ class Button{
         this.text = "Y7 winner";
         this.sRate = 12;
         
+        // For hypertext.
+        this.link = "https://nationalpoetryday.co.uk/";
+        // Activates hyperlink defaults to false.
+        this.hLink = false;
+        
     }
     
     hoverCheck(x,y){
@@ -49,7 +54,8 @@ class Button{
         else{
         fill(   this.fill.x+42,
                 this.fill.y+42,
-                this.fill.z+42);
+                this.fill.z+42,
+                this.alpha);
         stroke( this.stroke.x+10,
                 this.stroke.y+10,
                 this.stroke.z+10);
@@ -82,6 +88,9 @@ class Button{
     activate(){
         // For testing.
         plip.play();
+        if (this.hLink)
+            window.location.href =
+                this.link;
     }
     
     animate(){

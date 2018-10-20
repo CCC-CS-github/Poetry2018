@@ -2,8 +2,14 @@
 // Sound effect.
 let plip;
 
+// Banner image.
+let banner;
+
 // Array of buttons.
 let bus = [];
+
+// Array of sparkles.
+let sparkles = [];
 
 // Ratio scalar for window size.
 let tSize;
@@ -13,6 +19,10 @@ function preload(){
     plip =   loadSound('https://cccpoetry.github.io/Poetry2018/plip.wav');
     // Plip.wav orig. 'Flipping Through Book.wav' by spookymodem.
     // See https://opengameart.org/content/book-pages
+    
+    // https://nationalpoetryday.co.uk/
+    // Should hyperlink to that site!
+    banner = loadImage('https://cccpoetry.github.io/Poetry2018/poetryDay_banner.png');
 }
 
 let testBu;
@@ -22,6 +32,7 @@ function setup(){
     createCanvas(   windowWidth,
                     windowHeight);
   
+    
     plip.setVolume(0.2);
     plip.play();
     
@@ -45,21 +56,57 @@ function setup(){
     y8Bu.sRate = 120 + i * 10;
         bus.push(y8Bu);
     }
+    
+    // Invisible banner button.
+    y8Bu = new Button(tSize*6+12,height-height/6-12,
+                     width/1.68,height/3);
+    
+    y8Bu.hLink = true;
+    y8Bu.text = "";
+    y8Bu.alpha = 169;
+    y8Bu.fill.x = 0;
+    y8Bu.fill.y = 255;
+    y8Bu.fill.z = 255;
+    bus.push(y8Bu);
+    
 }
 
 function draw(){
     background(0,142,172);
   
+    // Poetry Day banner.
+    image(banner, tSize*1.7,height-height/3-12,width/1.68,height/3);
+    
     // Poetry Day title.
     renderTitle();
     
+    doSparkles();
+    
     for (let i = 0; i < bus.length; i++){
     bus[i].hoverCheck(mouseX,mouseY);
-    bus[i].animate();
-    bus[i].render();
-    bus[i].hoverCheck(mouseX,mouseY);
-    bus[i].animate();
-    bus[i].render();
+    if (!bus[i].hLink){
+        bus[i].animate();
+        bus[i].render();
+    }
+        else if (bus[i].hover){
+            bus[i].render();
+        }
+    }
+}
+
+function doSparkles(){
+//    if (mouseX < tSize * 1.7 && 
+    if (mouseX < width && 
+        frameCount % 2 === 0){
+        sparkles.push(new Sparkle(mouseX,mouseY));
+        sparkles[sparkles.length-1].rad = 
+            Math.random()*14;
+    }
+    for (let i = sparkles.length-1; i >= 0; i--){
+        sparkles[i].update();
+        sparkles[i].render();
+        if (sparkles[i].rip)
+            sparkles.splice(i,1);
     }
 }
 
@@ -79,22 +126,23 @@ function renderTitle(){
     textSize(tSize);
     //textStyle(NORMAL);
     strokeWeight(8);
-    text("National Poetry Day\n2018", tSize*1.7,tSize);
+    text("National Poetry Day\ncompetition 2018", tSize*1.7,tSize);
     
     
     // Quotation.
-    fill(   Math.sin(frameCount/30)*255,
+    fill(   0,
             Math.sin(frameCount/30)*255,
             Math.sin(frameCount/30)*255);
-    stroke(255-Math.sin(frameCount/40)*255,
-            255-Math.sin(frameCount/40)*255,
-            255-Math.sin(frameCount/40)*255);
+    noStroke();
+//    stroke(255-Math.sin(frameCount/40)*255,
+//            255-Math.sin(frameCount/40)*255,
+//            255-Math.sin(frameCount/40)*255);
     textSize(tSize/2);
     strokeWeight(1);
     textStyle(ITALIC);
-    text("'How out of Breath you are -'", tSize*1.7,height-tSize*2);
+    text("'The poetry of CHANGE...'", tSize*1.7,tSize*3);
     textSize(tSize/3);
-    text("(Emily Dickinson)", tSize*1.7,height-tSize*1);
+    //text("(Emily Dickinson)", tSize*1.7,tSize*3+tSize);
     textStyle(NORMAL);
 }
 
