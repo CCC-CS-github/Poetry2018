@@ -14,6 +14,10 @@ let sparkles = [];
 // Ratio scalar for window size.
 let tSize;
 
+// For checking whether mouse has moved.
+let prevX = 0;
+let prevY = 0;
+
 function preload(){
     //plip = loadSound('plip.wav');
     plip =   loadSound('https://cccpoetry.github.io/Poetry2018/plip.wav');
@@ -45,7 +49,7 @@ function setup(){
     let y8Bu;
     
     for (let i = 0; i < 5; i++){
-    y8Bu = new Button(44 + tSize * 1.7 + i * 100,height/2-42,88,42);
+    y8Bu = new Button(44 + tSize * 1.7 + i * 100,height/2+42,88,42);
     y8Bu.text = "Y" + (i+7) + " winner";
     y8Bu.fill.x = 0;
     y8Bu.fill.y = 0;
@@ -58,8 +62,9 @@ function setup(){
     }
     
     // Invisible banner button.
-    y8Bu = new Button(tSize*6+12,height-height/6-12,
-                     width/1.68,height/3);
+    imageMode(CENTER);
+    y8Bu = new Button(tSize*1.7+(width/1.7)/2,height-height/6-12,
+                     width/1.7,height/3);
     
     y8Bu.hLink = true;
     y8Bu.text = "";
@@ -75,7 +80,7 @@ function draw(){
     background(0,142,172);
   
     // Poetry Day banner.
-    image(banner, tSize*1.7,height-height/3-12,width/1.68,height/3);
+    image(banner, tSize*1.7+(width/1.7)/2,height-height/6-12,width/1.7,height/3);
     
     // Poetry Day title.
     renderTitle();
@@ -92,21 +97,38 @@ function draw(){
             bus[i].render();
         }
     }
+    
+    // Has mouse moved?
+    prevX = mouseX;
+    prevY = mouseY;
+    
 }
 
 function doSparkles(){
-//    if (mouseX < tSize * 1.7 && 
-    if (mouseX < width && 
-        frameCount % 2 === 0){
+    
+    // Mouse sparkles.
+    if (mouseX !== prevX && 
+        mouseY !== prevY &&
+        mouseX < width 
+       ){
         sparkles.push(new Sparkle(mouseX,mouseY));
         sparkles[sparkles.length-1].rad = 
-            Math.random()*14;
+            Math.random()*8;
     }
     for (let i = sparkles.length-1; i >= 0; i--){
         sparkles[i].update();
         sparkles[i].render();
         if (sparkles[i].rip)
             sparkles.splice(i,1);
+    }
+    
+    // Blue splodge splodgefall.
+    if (frameCount % 44){
+        sparkles.push(new Sparkle(width - 
+                                  Math.random()*width/4,
+                                 -55));
+        sparkles[sparkles.length-1].rad = 
+            Math.random()*55;
     }
 }
 
@@ -131,7 +153,7 @@ function renderTitle(){
     
     // Quotation.
     fill(   0,
-            Math.sin(frameCount/30)*255,
+            0,
             Math.sin(frameCount/30)*255);
     noStroke();
 //    stroke(255-Math.sin(frameCount/40)*255,

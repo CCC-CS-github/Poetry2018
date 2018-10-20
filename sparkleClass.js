@@ -12,6 +12,7 @@ class Sparkle{
         
         // Ready to deactivate?
         this.rip = false;
+        
     }
     
     update(){
@@ -23,10 +24,24 @@ class Sparkle{
     }
     
     render(){
-        strokeWeight(this.rad);
-        stroke(255,140);
-        fill(255,140);
-        point(this.pos.x, this.pos.y);
+        
+        
+        if (this.pos.x < width-width/4){
+            stroke(255,202);
+            noFill();
+            strokeWeight(1);
+            //fill(255,140);
+            if (Math.floor(this.pos.y) % 2 === 0)
+            ellipse(this.pos.x, this.pos.y,
+                   this.rad/2);
+        }
+        else{
+            strokeWeight(this.rad);
+            stroke(0,0,244,140);
+            fill(0,0,255,140);
+            point(this.pos.x, this.pos.y);
+        }
+        
     }
     
 }
