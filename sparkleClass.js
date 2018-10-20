@@ -26,7 +26,8 @@ class Sparkle{
     render(){
         
         
-        if (this.pos.x < width-width/4){
+        if (this.pos.x < width-width/4 &&
+           this.pos.x > tSize * 2){
             stroke(255,202);
             noFill();
             strokeWeight(1);

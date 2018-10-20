@@ -18,7 +18,10 @@ class Button{
         this.hover = false;
         // Label.
         this.text = "Y7 winner";
+        // Sine rate?
         this.sRate = 12;
+        // Visible?
+        this.visible = true;
         
         // For hypertext.
         this.link = "https://nationalpoetryday.co.uk/";
