@@ -20,13 +20,13 @@ let prevY = 0;
 
 function preload(){
     //plip = loadSound('plip.wav');
-    plip =   loadSound('https://cccpoetry.github.io/Poetry2018/plip.wav');
+    plip =   loadSound('https://CCC-CS-github.github.io/Poetry2018/plip.wav');
     // Plip.wav orig. 'Flipping Through Book.wav' by spookymodem.
     // See https://opengameart.org/content/book-pages
     
     // https://nationalpoetryday.co.uk/
     // Should hyperlink to that site!
-    banner = loadImage('https://cccpoetry.github.io/Poetry2018/poetryDay_banner.png');
+    banner = loadImage('https://CCC-CS-github.github.io/Poetry2018/poetryDay_banner.png');
 }
 
 let testBu;
