@@ -19,7 +19,7 @@ let prevY = 0;
 
 function preload(){
     //plip = loadSound('plip.wav');
-    plip =   loadSound('https://cccpoetry.github.io/Poetry2018/plip.wav');
+    plip =   loadSound('https://CCC-CS-github.github.io/Poetry2018/plip.wav');
     // Plip.wav orig. 'Flipping Through Book.wav' by spookymodem.
     // See https://opengameart.org/content/book-pages
     
